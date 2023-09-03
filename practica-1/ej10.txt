@@ -1,0 +1,10 @@
+a) Cree la carpeta ISO2017: mkdir ISO2017
+(b) Acceda a la carpeta (cd): cd ISO2017
+(c) Cree dos archivos con los nombres iso2017-1 e iso2017-2 (touch) : touch(nomArchivo)
+(d) Liste el contenido del directorio actual (ls) : eso xd
+(e) Visualizar la ruta donde estoy situado (pwd) : eso xd
+(f) Busque todos los archivos en los que su nombre contiene la cadena “iso*” (find) eso xd
+(g) Informar la cantidad de espacio libre en disco (df) : eso xd
+(h) Verifique los usuarios conectado al sistema (who) : eso xd
+(i) Acceder a el archivo iso2017-1 e ingresar Nombre y Apellido : vi iso2017-1 y editar dentro
+(j) Mostrar en pantalla las últimas líneas de un archivo (tail). : tail iso2017-1

@@ -1,0 +1,50 @@
+11. Investigue su funcionamiento y parámetros más importantes:
+(a) shutdown: shutdown: El comando shutdown se utiliza para apagar o reiniciar un sistema. Algunos parámetros comunes incluyen:
+
+    -h: Apaga el sistema.
+    -r: Reinicia el sistema.
+    -c: Cancela una orden de apagado o reinicio previamente programada.
+(b) reboot: reinicia la pc
+(c) halt: apaga el sistema
+(d) locate: busca archivos en el sistema
+(e) uname: El comando uname se utiliza para mostrar información sobre el sistema operativo y el kernel. Algunos parámetros comunes incluyen:
+
+    -a: Muestra toda la información disponible.
+    -s: Muestra el nombre del sistema operativo.
+    -r: Muestra la versión del kernel.
+
+(f) dmesg: dmesg muestra el registro del sistema, que incluye mensajes del kernel y del hardware. Es útil para diagnosticar problemas del sistema.
+
+(g) lspci: lspci muestra información sobre los dispositivos PCI (Peripheral Component Interconnect) conectados a tu sistema.
+
+(h) at: El comando at se utiliza para programar la ejecución de comandos en un momento específico. Puedes usarlo para ejecutar tareas en el futuro.
+
+(i) netstat: netstat se utiliza para mostrar información sobre la red, como conexiones activas, tablas de enrutamiento y estadísticas de interfaz.
+
+(j) mount: mount se utiliza para montar sistemas de archivos en un directorio especificado. Los parámetros varían según la necesidad de montar o desmontar un sistema de archivos.
+
+(k) umount: umount se utiliza para desmontar sistemas de archivos previamente montados. Debes proporcionar la ruta al directorio que deseas desmontar.
+
+(l) head: El comando head muestra las primeras líneas de un archivo. Puedes especificar el número de líneas que deseas ver con el parámetro -n.
+
+(m) losetup: losetup se utiliza para configurar bucles de dispositivo, que son dispositivos virtuales que se pueden usar para acceder a archivos como si fueran dispositivos de bloque.
+
+(n) write: write se utiliza para enviar mensajes a otros usuarios conectados al sistema. Debes especificar el nombre del usuario y el mensaje que deseas enviar.
+
+(ñ) mkfs: El comando mkfs se utiliza para crear un sistema de archivos en una partición. Debes especificar el tipo de sistema de archivos que deseas crear y la partición en la que deseas crearlo.
+
+(o) fdisk: fdisk se utiliza para administrar particiones en unidades de disco. Puedes utilizarlo para crear, eliminar y gestionar particiones en un disco.
+
+Recuerda que la disponibilidad de estos comandos y sus parámetros específicos puede variar según la distribución de Linux que estés utilizando. Puedes consultar la documentación del sistema o utilizar las opciones -h o --help junto con un comando para obtener información detallada sobre sus parámetros y funciones.
+
+En sistemas Unix y Linux, los comandos mencionados en el ejercicio anterior se almacenan en directorios específicos dentro del sistema de archivos. Aquí te indico los directorios comunes donde se encuentran estos comandos:
+
+(a) `shutdown`, (b) `reboot`, (c) `halt`: Estos comandos generalmente se almacenan en `/sbin` o `/usr/sbin`, ya que son comandos que requieren privilegios de administrador para ejecutarse.
+
+(d) `locate`, (e) `uname`, (f) `dmesg`, (g) `lspci`, (h) `at`, (i) `netstat`, (j) `mount`, (k) `umount`, (l) `head`, (m) `losetup`, (n) `write`, (ñ) `mkfs`, (o) `fdisk`: Estos comandos suelen estar en directorios estándar de comandos de usuario no privilegiados y se almacenan en `/bin` o `/usr/bin`. Los usuarios normales pueden ejecutar estos comandos sin necesidad de privilegios especiales.
+
+Ten en cuenta que la ubicación exacta de estos comandos puede variar según la distribución de Linux específica que estés utilizando. Puedes usar el comando `which` o `whereis` para encontrar la ubicación de un comando específico en tu sistema, por ejemplo:
+
+which shutdown
+
+Esto te mostrará la ruta completa del comando `shutdown`.
