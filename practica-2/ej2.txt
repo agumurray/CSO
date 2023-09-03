@@ -1,0 +1,589 @@
+(a) Proceso de Arranque SystemV:
+1. BIOS/UEFI: Cuando se enciende la PC, el firmware (BIOS o UEFI) realiza una autoprueba de hardware (POST) y luego busca un dispositivo de arranque, como un disco duro o una unidad USB.
+
+2. Carga del gestor de arranque: El gestor de arranque, como GRUB, se carga desde el dispositivo de arranque. Este gestor presenta al usuario opciones de arranque, como elegir el sistema operativo o el kernel Linux a iniciar.
+
+3. Carga del kernel: El gestor de arranque carga el kernel de Linux en la memoria y lo inicia. El kernel es el núcleo del sistema operativo.
+
+4. Inicio de init: El kernel inicia el proceso "init", que es el primer proceso del espacio de usuario y actúa como el padre de todos los demás procesos.
+
+5. Ejecución de scripts de inicio: Init ejecuta una serie de scripts de inicio en un orden específico, configurado en el archivo /etc/inittab. Estos scripts configuran servicios y configuraciones básicas del sistema.
+
+6. Cambio de runlevel: Init cambia al runlevel especificado, que determina qué servicios se inician o detienen. Los runlevels son niveles de ejecución predefinidos con diferentes conjuntos de servicios.
+
+7. Obtención del login: Una vez que se alcanza el runlevel deseado, el sistema está listo para que un usuario inicie sesión. El gestor de inicio de sesión, como GDM o KDM, se ejecuta para proporcionar una interfaz gráfica o de línea de comandos para el inicio de sesión.
+
+(b) Proceso INIT: Init es el primer proceso del sistema y su objetivo es iniciar y gestionar otros procesos del sistema operativo. En el contexto de SystemV, init es ejecutado por el kernel.
+
+(c) Comando "pstree": El comando "pstree" muestra la estructura jerárquica de procesos en el sistema, lo que permite ver cómo los procesos están relacionados entre sí, con init como el proceso principal y otros procesos secundarios que se bifurcan a partir de él.
+
+(d) RunLevels: Los runlevels son estados o niveles de ejecución del sistema que determinan qué servicios y procesos se deben iniciar o detener en un momento dado. Están numerados del 0 al 6 en SystemV, con significados específicos para cada uno.
+
+(e) Referencia a Runlevels: Los runlevels en SystemV tienen los siguientes significados estándar:
+   - 0: Apagar el sistema.
+   - 1: Modo de usuario único o de rescate.
+   - 2: Modo de usuario múltiple sin red.
+   - 3: Modo de usuario múltiple con red.
+   - 4: Sin definición (puede personalizarse).
+   - 5: Inicio en modo gráfico.
+   - 6: Reinicio del sistema.
+
+   Los runlevels se definen en el archivo "/etc/inittab". No todas las distribuciones de Linux siguen estos estándares, algunas pueden tener variaciones en los runlevels y su comportamiento.
+
+(f) Archivo "/etc/inittab": Este archivo tiene la finalidad de configurar el proceso de inicio de SystemV. Contiene información sobre los runlevels, acciones a realizar en cada runlevel y comandos para ejecutar scripts de inicio.
+
+(g) Cambio de Runlevel: Para cambiar de un runlevel a otro, se puede usar el comando "init" o "telinit", por ejemplo, "sudo init 3" para cambiar al runlevel 3. Este cambio no es permanente y solo afecta el estado actual del sistema. Para hacerlo permanente, se deben modificar los archivos de configuración apropiados.
+
+(h) Scripts RC: Los scripts RC son scripts de inicio y apagado que configuran y controlan servicios y tareas durante el proceso de arranque o apagado del sistema. Se almacenan en directorios como "/etc/rc.d" o "/etc/init.d". El sistema determina qué scripts ejecutar basándose en enlaces simbólicos en los directorios de runlevels. El orden se controla mediante números en los nombres de archivo.
+
+(i) insserv: "insserv" es una herramienta utilizada para gestionar los scripts de inicio en sistemas que adoptan el estándar LSB (Linux Standard Base). Facilita la configuración de las dependencias entre servicios y proporciona un método más ordenado y automatizado para gestionar los scripts de inicio en comparación con los sistemas tradicionales.
+
+(j) Upstart: Upstart es un sistema de inicio de eventos utilizado por algunas distribuciones de Linux, como Ubuntu. En lugar de utilizar runlevels, Upstart se basa en eventos y tareas definidas en archivos de configuración. Los eventos pueden desencadenar acciones específicas, lo que permite una gestión más flexible y precisa del inicio del sistema.
+
+(k) Diferencias entre SystemV y Upstart:
+   - SystemV utiliza runlevels, mientras que Upstart utiliza eventos y tareas.
+   - Upstart permite un inicio más rápido y paralelo de servicios.
+   - Upstart ofrece una mayor flexibilidad en la gestión de dependencias y eventos.
+   - SystemV usa scripts de inicio tradicionales, mientras que Upstart utiliza archivos de configuración de eventos.
+
+(l) Reemplazo de scripts rc en Upstart: En Upstart, los scripts rc son reemplazados por archivos de configuración de eventos y tareas. Estos archivos se encuentran en directorios como "/etc/init" y "/etc/init.d" en algunas distribuciones que mantienen la compatibilidad con SystemV. Los archivos de configuración de Upstart suelen tener extensiones ".conf" y definen cómo iniciar y detener servicios en respuesta a eventos específicos.
+
+(m) El fragmento de configuración de Upstart que describes corresponde a un job de Upstart para el servicio de base de datos MySQL. Aquí está la explicación de cada línea:
+
+- `description "MySQL Server"`: Esta línea proporciona una descripción del servicio, que es "MySQL Server" en este caso.
+
+- `author "infoautor"`: Indica el nombre del autor o persona responsable de la configuración del job.
+
+- `start on (net-device-up and local-filesystems and runlevel [2345])`: Esta línea especifica las condiciones bajo las cuales se debe iniciar el servicio MySQL. En este caso, el servicio se inicia cuando se encuentren disponibles las interfaces de red (net-device-up), cuando se hayan montado los sistemas de archivos locales (local-filesystems) y cuando el sistema esté en uno de los runlevels 2, 3, 4 o 5.
+
+- `stop on runlevel [016]`: Esta línea indica en qué runlevels se debe detener el servicio MySQL. En este caso, el servicio se detiene cuando el sistema cambia al runlevel 0, 1 o 6.
+
+- `exec /usr/sbin/mysqld`: Esta línea especifica el comando que se debe ejecutar para iniciar el servicio MySQL. En este caso, se ejecuta el programa "/usr/sbin/mysqld" para iniciar el servidor de MySQL.
+
+(n) Systemd es un sistema de inicio y administración de servicios y procesos en sistemas operativos basados en Linux. Se ha convertido en el estándar de facto en muchas distribuciones de Linux modernas. Systemd se encarga de la gestión de servicios, daemons, tareas programadas, y otras funciones esenciales del sistema. Proporciona una gestión más avanzada y eficiente que los sistemas de inicio tradicionales como SysV init.
+
+(ñ) La activación de socket en systemd se refiere a la capacidad de systemd para gestionar sockets y activar servicios cuando se detecta actividad en un socket específico. En lugar de iniciar permanentemente un servicio, systemd puede esperar a que lleguen conexiones a un socket determinado y luego activar el servicio solo cuando sea necesario. Esto ayuda a ahorrar recursos y mejora la eficiencia del sistema al evitar la ejecución innecesaria de servicios.
+
+(o) Cgroup, que significa "control group", es una característica del kernel de Linux utilizada para limitar, contabilizar y aislar los recursos utilizados por un conjunto de procesos. Los cgroups permiten controlar y gestionar recursos como CPU, memoria, E/S de disco, ancho de banda de red, y más. Se utilizan en sistemas modernos de administración de procesos y recursos, como systemd, para garantizar que los recursos del sistema se asignen de manera equitativa y eficiente entre los procesos y servicios en ejecución.
+
+(a) En un sistema GNU/Linux, la información de los usuarios se guarda principalmente en archivos y directorios ubicados en el directorio "/etc". Los archivos clave relacionados con la información de los usuarios incluyen:
+
+- `/etc/passwd`: Contiene información sobre los usuarios del sistema, incluidos sus nombres de usuario, UIDs (User IDs), GIDs (Group IDs), nombres completos, rutas de directorio de inicio y shells predeterminados.
+
+- `/etc/shadow`: Almacena contraseñas cifradas y otros datos de seguridad relacionados con las cuentas de usuario. Este archivo es accesible solo por el superusuario (root) y proporciona una capa adicional de seguridad.
+
+- `/etc/group`: Contiene información sobre los grupos de usuarios, incluidos los nombres de grupo, GIDs y una lista de usuarios que pertenecen a cada grupo.
+
+- `/etc/gshadow`: Similar a `/etc/shadow`, pero para grupos. Almacena información de contraseñas cifradas para grupos.
+
+(b) Las siglas UID significan "User ID" (Identificador de Usuario), y las siglas GID significan "Group ID" (Identificador de Grupo).
+
+- UID: Es un número único asignado a cada usuario en el sistema. Sirve para identificar de manera única a cada usuario. No pueden coexistir UIDs iguales en un sistema GNU/Linux, ya que esto podría causar conflictos de identificación y problemas de seguridad.
+
+- GID: Es un número único asignado a cada grupo en el sistema. Al igual que con las UIDs, los GIDs deben ser únicos para garantizar una identificación adecuada de los grupos.
+
+(c) El usuario "root" es el superusuario en un sistema GNU/Linux y tiene control total sobre el sistema. No puede haber más de un usuario con el nombre "root" en el sistema, ya que "root" es el nombre de usuario reservado para el superusuario. La UID del usuario "root" generalmente es 0.
+
+(d) Para agregar un nuevo usuario llamado "iso2017" y realizar las acciones mencionadas, puedes seguir estos pasos:
+
+1. Crear el grupo "catedra" si no existe:
+   ```
+   sudo groupadd catedra
+   ```
+
+2. Agregar el usuario "iso2017" y asignarle un directorio de inicio personalizado:
+   ```
+   sudo useradd -m -d /home/iso_2017 -g catedra iso2017
+   ```
+
+3. Crear un archivo en el directorio de inicio de "iso2017" sin iniciar sesión como ese usuario (por ejemplo, como superusuario "root"):
+   ```
+   sudo touch /home/iso_2017/mi_archivo.txt
+   sudo chown iso2017:catedra /home/iso_2017/mi_archivo.txt
+   ```
+
+4. Eliminar el usuario "iso2017" y su directorio de inicio:
+   ```
+   sudo userdel -r iso2017
+   ```
+
+(e) Aquí están los comandos mencionados con sus funcionalidades y parámetros:
+
+- `useradd` (o `adduser`): Agrega un nuevo usuario al sistema. Los parámetros comunes incluyen `-m` para crear un directorio de inicio, `-d` para especificar una ubicación de inicio personalizada y `-g` para asignar un grupo principal.
+
+- `usermod`: Modifica las propiedades de un usuario existente, como su nombre de usuario, grupo principal, directorio de inicio, etc.
+
+- `userdel`: Elimina un usuario del sistema. El parámetro `-r` se utiliza para eliminar también su directorio de inicio.
+
+- `su`: Permite cambiar al usuario superusuario o a otro usuario. Por ejemplo, `su - username` inicia una sesión como el usuario especificado.
+
+- `groupadd`: Agrega un nuevo grupo al sistema.
+
+- `who`: Muestra información sobre los usuarios que han iniciado sesión en el sistema en ese momento.
+
+- `groupdel`: Elimina un grupo del sistema.
+
+- `passwd`: Permite cambiar la contraseña de un usuario o del superusuario (root).
+
+(a) Los permisos sobre archivos en un sistema GNU/Linux se definen mediante un sistema de permisos de tres categorías: usuario (dueño), grupo y otros. Cada categoría puede tener permisos de lectura (r), escritura (w) y ejecución (x) en un archivo. Estos permisos se establecen como una combinación de letras y se representan en un formato como "rwxr-xr--". En este ejemplo, el dueño tiene permisos de lectura, escritura y ejecución, el grupo tiene permisos de lectura y ejecución, y otros tienen solo permisos de lectura.
+
+(b) Funcionalidad y parámetros de los comandos relacionados con permisos en GNU/Linux:
+
+- `chmod`: Cambia los permisos de un archivo o directorio. Se utiliza con notación octal o simbólica para establecer los permisos.
+
+- `chown`: Cambia el propietario de un archivo o directorio. Permite cambiar tanto el usuario como el grupo propietario.
+
+- `chgrp`: Cambia el grupo propietario de un archivo o directorio.
+
+(c) Notación octal en `chmod`: La notación octal en `chmod` se utiliza para definir permisos de manera numérica. Cada permiso se representa con un número, donde:
+
+   - 4 representa el permiso de lectura (r).
+   - 2 representa el permiso de escritura (w).
+   - 1 representa el permiso de ejecución (x).
+   - 0 representa la ausencia de permiso.
+
+   Luego, se combinan estos números para representar los permisos de usuario, grupo y otros. Por ejemplo, "chmod 755 archivo" otorga permisos de lectura, escritura y ejecución al dueño, y permisos de solo lectura y ejecución a grupo y otros.
+
+(d) En un sistema GNU/Linux, un usuario no puede acceder a un archivo para el cual no posee permisos. El sistema de permisos está diseñado para restringir el acceso a archivos y directorios de manera segura. Si un usuario intenta acceder a un archivo sin los permisos adecuados, recibirá un mensaje de error de "permiso denegado".
+
+(e) Los conceptos de "full path name" y "relative path name" se refieren a cómo se especifica la ubicación de un archivo o directorio en el sistema de archivos:
+
+- "Full path name": Especifica la ubicación completa de un archivo o directorio desde el directorio raíz ("/"). Por ejemplo, "/home/usuario/documentos/archivo.txt" es un "full path name" que indica la ubicación completa del archivo.
+
+- "Relative path name": Especifica la ubicación de un archivo o directorio en relación con el directorio actual. Por ejemplo, si el directorio actual es "/home/usuario", el "relative path name" para el mismo archivo sería "documentos/archivo.txt".
+
+(f) Para determinar en qué directorio se encuentra actualmente, puede utilizar el comando `pwd` (print working directory). Para ingresar a su directorio personal sin escribir todo el path completo, puede usar el comando `cd` seguido del carácter "~" (tilde). Por ejemplo:
+
+   - `cd ~` lo llevará a su directorio personal.
+   - `cd ~/documentos` lo llevará a la carpeta "documentos" dentro de su directorio personal.
+
+   Puede usar la misma idea para acceder a otros directorios reemplazando "~" por la ruta relativa al directorio deseado.
+
+(g) Funcionalidad y parámetros de los comandos relacionados con el uso del FileSystem:
+
+- `cd`: Cambia el directorio actual.
+- `umount`: Desmonta un sistema de archivos.
+- `mkdir`: Crea un nuevo directorio.
+- `du`: Muestra el uso del espacio en disco de archivos y directorios.
+- `rmdir`: Elimina directorios vacíos.
+- `df`: Muestra el espacio libre y utilizado en los sistemas de archivos montados.
+- `mount`: Monta un sistema de archivos.
+- `ln`: Crea enlaces (links) entre archivos.
+- `ls`: Lista los archivos y directorios en un directorio.
+- `pwd`: Muestra el directorio actual.
+- `cp`: Copia archivos y directorios.
+- `mv`: Mueve (cambia el nombre) o mueve archivos y directorios.
+
+(a) Un proceso en un sistema operativo es una instancia en ejecución de un programa o tarea. Cada proceso tiene un identificador único llamado PID (Process ID) que lo distingue de otros procesos. PPID (Parent Process ID) se refiere al PID del proceso padre que creó el proceso actual. No todos los procesos tienen estos atributos en GNU/Linux, ya que algunos procesos pueden ser procesos huérfanos que carecen de un proceso padre visible. Otros atributos de un proceso incluyen el estado (como ejecución, en espera o detenido), la prioridad, los recursos asignados y más.
+
+(b) Los comandos para ver qué procesos están en ejecución en un sistema GNU/Linux incluyen:
+
+- `ps`: Muestra información sobre los procesos en ejecución, incluyendo su PID, estado, nombre del proceso y más.
+
+- `top`: Proporciona una vista en tiempo real de los procesos en ejecución y su uso de recursos. Es una herramienta más interactiva que `ps`.
+
+(c) Un proceso en ejecución en background significa que se está ejecutando en segundo plano, sin ocupar la ventana o terminal principal. Puedes seguir utilizando la terminal mientras el proceso se ejecuta. En foreground, el proceso está en primer plano y puede ocupar la terminal, bloqueando su uso hasta que el proceso se complete.
+
+(d) Para ejecutar un proceso en background, puedes agregar un "&" al final del comando al ejecutarlo. Por ejemplo, `comando &` ejecutará "comando" en background. Para pasar un proceso de background a foreground, puedes usar el comando `fg`. Para pausar un proceso en foreground y enviarlo a background, puedes usar `Ctrl+Z` para suspenderlo y luego `bg` para reanudarlo en background.
+
+(e) Pipe (`|`) se utiliza para redirigir la salida estándar de un proceso hacia la entrada estándar de otro proceso. Por ejemplo, `ls | grep archivo` redirige la lista de archivos generada por `ls` como entrada para el comando `grep`, que buscará el archivo especificado.
+
+(f) Tipos de redirecciones en GNU/Linux:
+
+- Redirección de salida (`>`): Redirige la salida estándar a un archivo. Por ejemplo, `comando > archivo.txt` guarda la salida del comando en "archivo.txt".
+
+- Redirección de entrada (`<`): Redirige la entrada desde un archivo en lugar del teclado. Por ejemplo, `comando < entrada.txt` toma la entrada del archivo "entrada.txt" en lugar del teclado.
+
+- Redirección de salida estándar y error (`2>`): Redirige la salida estándar y de error a un archivo. Por ejemplo, `comando 2> error.txt` guarda los errores del comando en "error.txt".
+
+(g) El comando `kill` se utiliza para enviar señales a procesos en ejecución y controlar su comportamiento. Por ejemplo, `kill -9 PID` envía una señal SIGKILL al proceso con el PID especificado, forzando su finalización.
+
+(h) Funcionalidad y parámetros de los comandos relacionados con el manejo de procesos en GNU/Linux:
+
+- `ps`: Muestra información sobre procesos en ejecución.
+
+- `kill`: Envía señales a procesos para controlar su comportamiento.
+
+- `pstree`: Muestra la estructura jerárquica de procesos en forma de árbol.
+
+- `killall`: Envía señales a procesos por nombre en lugar de PID.
+
+- `top`: Proporciona una vista en tiempo real de procesos y recursos del sistema.
+
+- `nic`: Este comando no es común en sistemas GNU/Linux estándar, por lo que no puedo proporcionar información sobre él. Podría ser un comando específico de una distribución o una herramienta personalizada.
+
+(a) El concepto de empaquetar archivos en GNU/Linux se refiere a la acción de crear un archivo que contiene uno o más archivos o directorios comprimidos o sin comprimir. Estos archivos se pueden utilizar para facilitar la transferencia, el respaldo o el intercambio de múltiples archivos y directorios.
+
+(b) Para sumar el tamaño de cuatro archivos en un directorio, puedes usar el comando `du` (disk usage) para calcular el tamaño de cada archivo y luego empaquetarlos. Supongamos que los archivos se llaman "archivo1", "archivo2", "archivo3" y "archivo4". Puedes hacerlo de la siguiente manera:
+
+```bash
+du -h archivo1 archivo2 archivo3 archivo4
+```
+
+Luego, para crear un archivo empaquetado (por ejemplo, "archivos_empaquetados.tar.gz") con estos cuatro archivos y comparar los tamaños, puedes usar `tar` y `gzip`:
+
+```bash
+tar -czvf archivos_empaquetados.tar.gz archivo1 archivo2 archivo3 archivo4
+du -h archivos_empaquetados.tar.gz
+```
+
+Nota: El primer comando crea un archivo empaquetado comprimido, y el segundo comando muestra el tamaño del archivo empaquetado.
+
+(c) Para comprimir cuatro archivos en uno solo, puedes usar el comando `tar` en combinación con la opción `-czvf`. Aquí está la secuencia de comandos:
+
+```bash
+tar -czvf archivos_empaquetados.tar.gz archivo1 archivo2 archivo3 archivo4
+```
+
+Esto creará un archivo empaquetado llamado "archivos_empaquetados.tar.gz" que contiene los cuatro archivos.
+
+(d) Sí, es posible comprimir un conjunto de archivos utilizando un solo comando, como se mostró en la respuesta anterior. El comando `tar` puede empaquetar y comprimir múltiples archivos y directorios en uno solo.
+
+(e) Funcionalidad de los comandos:
+
+- `tar`: Se utiliza para empaquetar y comprimir archivos y directorios. Sus opciones comunes incluyen `-c` (crear), `-x` (extraer), `-z` (usar gzip), `-j` (usar bzip2), `-v` (modo verbose), `-f` (nombre de archivo).
+
+- `grep`: Se utiliza para buscar patrones de texto en archivos o en la salida de otros comandos.
+
+- `gzip`: Comprime archivos utilizando el algoritmo de compresión gzip. Suele usarse en combinación con `tar` para crear archivos empaquetados comprimidos.
+
+- `zgrep`: Se utiliza para buscar patrones de texto en archivos comprimidos con gzip.
+
+- `wc`: Cuenta líneas, palabras y caracteres en archivos o en la entrada estándar. Sus opciones comunes incluyen `-l` (contar líneas), `-w` (contar palabras) y `-c` (contar caracteres).
+
+Voy a explicar la acción de cada uno de los comandos, asumiendo que se ejecutan desde un usuario que no es root ni pertenece al grupo de root:
+
+1. `ls -l > prueba`: Este comando lista el contenido del directorio actual en formato largo y redirige la salida a un archivo llamado "prueba".
+
+2. `ps > PRUEBA`: Este comando lista los procesos en ejecución y redirige la salida a un archivo llamado "PRUEBA".
+
+3. `chmod 710 prueba`: Cambia los permisos del archivo "prueba" para que el propietario tenga permisos de lectura, escritura y ejecución (7), el grupo tenga permisos de ejecución (1) y otros no tengan ningún permiso (0).
+
+4. `chown root:root PRUEBA`: Cambia el propietario y el grupo del archivo "PRUEBA" a "root:root". Esto solo se puede hacer si el usuario tiene permisos para hacerlo.
+
+5. `chmod 777 PRUEBA`: Cambia los permisos del archivo "PRUEBA" para que todos los usuarios tengan permisos de lectura, escritura y ejecución. Esto es un conjunto completo de permisos y puede ser peligroso.
+
+6. `chmod 700 /etc/passwd`: Cambia los permisos del archivo "/etc/passwd" para que solo el propietario (root) tenga permisos de lectura, escritura y ejecución, y los demás no tengan ningún permiso. Esto asegura que solo el superusuario pueda modificar este archivo importante.
+
+7. `passwd root`: Intenta cambiar la contraseña del usuario "root". Esto solo puede hacerlo el superusuario (root) o un usuario con permisos especiales.
+
+8. `rm PRUEBA`: Elimina el archivo "PRUEBA".
+
+9. `man /etc/shadow`: Intenta mostrar el manual (información de ayuda) del archivo "/etc/shadow". Esto solo se puede hacer si se tiene permiso para acceder a ese archivo y leerlo.
+
+10. `find / -name *.conf`: Busca archivos con extensión ".conf" en todo el sistema de archivos ("/"). Esto puede ser lento y requerir permisos para acceder a algunos directorios.
+
+11. `usermod root -d /home/newroot -L`: Modifica las propiedades del usuario "root" para cambiar su directorio de inicio a "/home/newroot" y bloquear su cuenta. Esto solo se puede hacer por el superusuario (root).
+
+12. `cd /root`: Cambia el directorio de trabajo actual al directorio "/root", que es el directorio de inicio del usuario root.
+
+13. `rm *`: Elimina todos los archivos en el directorio actual. Esto podría causar la pérdida de datos si se encuentra en un directorio importante.
+
+14. `cd /etc`: Cambia el directorio de trabajo actual al directorio "/etc".
+
+15. `cp * /home -R`: Copia todos los archivos y directorios en "/etc" al directorio "/home" de forma recursiva ("-R").
+
+16. `shutdown`: Intenta apagar o reiniciar el sistema. Esto generalmente requiere permisos de superusuario (root).
+
+Nota: Algunos de estos comandos pueden generar errores o no ser permitidos para un usuario que no es root debido a restricciones de permisos y seguridad en el sistema.
+
+Aquí tienes los comandos necesarios para realizar cada una de las acciones mencionadas:
+
+(a) Para terminar el proceso con PID 23, puedes usar el comando `kill` de la siguiente manera:
+
+```bash
+kill 23
+```
+
+(b) Terminar el proceso llamado "init" no es una acción recomendada, ya que "init" es el proceso principal del sistema y su terminación puede provocar la caída del sistema. Sin embargo, si aún deseas hacerlo, puedes usar el comando `kill` con el nombre del proceso:
+
+```bash
+killall init
+```
+
+(c) Para buscar todos los archivos de usuarios cuyos nombres contienen la cadena ".conf", puedes utilizar el comando `find` de la siguiente manera:
+
+```bash
+find /home -type f -name "*.conf"
+```
+
+(d) Para guardar una lista de procesos en ejecución en un archivo llamado "/home/tu_nombre_de_usuario/procesos", puedes usar el comando `ps` con redirección de salida:
+
+```bash
+ps > /home/tu_nombre_de_usuario/procesos
+```
+
+(e) Para cambiar los permisos del archivo "/home/tu_nombre_de_usuario/xxxx" a los especificados, puedes usar el comando `chmod` de la siguiente manera:
+
+```bash
+chmod u=rwx,g=rx,o=x /home/tu_nombre_de_usuario/xxxx
+```
+
+(f) Para cambiar los permisos del archivo "/home/tu_nombre_de_usuario/yyyy" a los especificados, puedes usar el comando `chmod` de la siguiente manera:
+
+```bash
+chmod u=rw,g=rx,o= /home/tu_nombre_de_usuario/yyyy
+```
+
+(g) Para borrar todos los archivos del directorio "/tmp", puedes usar el comando `rm` con la opción `-r` (recursivo) para eliminar archivos y directorios:
+
+```bash
+rm -r /tmp/*
+```
+
+(h) Para cambiar el propietario del archivo "/opt/isodata" al usuario "iso2021", puedes usar el comando `chown` de la siguiente manera:
+
+```bash
+chown iso2021 /opt/isodata
+```
+
+(i) Para guardar en el archivo "/home/tu_nombre_de_usuario/donde_el_directorio.txt" el directorio actual en el que te encuentras en este momento, puedes usar el comando `pwd` para obtener el directorio actual y luego redirigir la salida al archivo:
+
+```bash
+pwd > /home/tu_nombre_de_usuario/donde_el_directorio.txt
+```
+
+Este comando guardará la ruta completa del directorio actual en el archivo especificado, y si el archivo ya existe, su contenido anterior no se eliminará.
+
+Aquí tienes los comandos necesarios para realizar cada una de las acciones mencionadas:
+
+(a) Para ingresar al sistema como usuario "root", puedes usar el comando `su` (switch user) de la siguiente manera:
+
+```bash
+su -
+```
+
+Esto te pedirá la contraseña del usuario "root".
+
+(b) Para crear un usuario con el nombre "papellido" (primer letra de su nombre seguida de su apellido) y asignarle una contraseña, puedes usar el comando `useradd` seguido del comando `passwd` para establecer la contraseña:
+
+```bash
+useradd papellido
+passwd papellido
+```
+
+(c) Luego de crear el usuario, varios archivos y directorios pueden haber sido modificados o creados. Algunos de los archivos afectados incluyen:
+
+- `/etc/passwd`: Se actualiza con la información del nuevo usuario.
+- `/etc/shadow`: Contiene las contraseñas encriptadas.
+- `/etc/group`: Se actualiza con el grupo principal del nuevo usuario.
+- `/home/papellido`: El directorio personal del nuevo usuario se crea aquí.
+
+(d) Para crear un directorio llamado "cursada2021" en `/tmp`, puedes usar el comando `mkdir`:
+
+```bash
+mkdir /tmp/cursada2021
+```
+
+(e) Para copiar todos los archivos de `/var/log` al directorio recién creado, puedes usar el comando `cp` con la opción `-r` para copiar recursivamente:
+
+```bash
+cp -r /var/log /tmp/cursada2021
+```
+
+(f) Para cambiar el propietario y el grupo del directorio y sus archivos al usuario creado y al grupo "users", puedes usar el comando `chown` y `chgrp` de la siguiente manera:
+
+```bash
+chown -R papellido:users /tmp/cursada2021
+```
+
+(g) Para otorgar permisos totales al propietario, permisos de escritura al grupo y permisos de escritura y ejecución a todos los demás usuarios para todos los archivos dentro de un directorio de forma recursiva, puedes usar el comando `chmod` de la siguiente manera:
+
+```bash
+chmod -R 761 /tmp/cursada2021
+```
+
+(h) Para acceder a otra terminal virtual, puedes utilizar las combinaciones de teclas `Ctrl+Alt+F2` (o cualquier otra tecla de función de F2 a F6). Luego, puedes iniciar sesión con el usuario creado.
+
+(i) Una vez logueado con el usuario, puedes averiguar el nombre de su terminal actual usando el comando `tty`:
+
+```bash
+tty
+```
+
+(j) Para verificar la cantidad de procesos activos en el sistema, puedes usar el comando `ps`:
+
+```bash
+ps aux | wc -l
+```
+
+Esto contará la cantidad de líneas en la salida de `ps aux`, que representa la cantidad de procesos activos.
+
+(k) Para verificar la cantidad de usuarios conectados al sistema, puedes usar el comando `who`:
+
+```bash
+who
+```
+
+Esto mostrará una lista de usuarios conectados.
+
+(l) Para enviar un mensaje al usuario anteriormente creado, puedes usar el comando `wall` (write all users) de la siguiente manera:
+
+```bash
+wall "El sistema se apagará pronto. Guarde su trabajo."
+```
+
+(m) Para apagar el sistema, puedes usar el comando `shutdown` con la opción `-h` (halt) para apagar el sistema:
+
+```bash
+shutdown -h now
+```
+
+Estos comandos asumen que tienes los privilegios necesarios para realizar estas acciones.\
+
+(a) A continuación, se presentan los comandos con explicaciones de los resultados obtenidos en dos sesiones:
+
+**Sesión 1 (siguiendo los comandos):**
+
+1. `mkdir iso`: Crea un directorio llamado "iso" en el directorio de trabajo actual.
+
+2. `cd ./iso`: Cambia el directorio de trabajo actual al directorio "iso".
+
+3. `ps > f0`: Captura una lista de procesos en ejecución y redirige la salida a un archivo llamado "f0".
+
+4. `ls > f1`: Lista el contenido del directorio actual y redirige la salida a un archivo llamado "f1".
+
+5. `cd /`: Cambia el directorio de trabajo actual al directorio raíz del sistema.
+
+6. `echo $HOME`: Imprime en pantalla el valor de la variable de entorno $HOME, que representa el directorio personal del usuario.
+
+7. `ls -l &> $HOME/iso/ls`: Lista el contenido del directorio actual en formato largo y redirige la salida estándar y de error al archivo "ls" en el directorio "iso" en el directorio personal del usuario.
+
+8. `cd $HOME`: Cambia el directorio de trabajo actual al directorio personal del usuario.
+
+9. `mkdir f2`: Crea un directorio llamado "f2" en el directorio personal del usuario.
+
+10. `ls -l df2`: Lista el contenido del directorio "f2" en formato largo y muestra información sobre el espacio utilizado en el sistema de archivos.
+
+11. `chmod 341 f2`: Cambia los permisos del directorio "f2" para que el propietario tenga permisos de lectura y escritura (3), el grupo tenga permiso de ejecución (4) y otros tengan permisos de lectura (1).
+
+12. `touch dir`: Crea un archivo llamado "dir" en el directorio personal del usuario.
+
+13. `cd f2`: Cambia el directorio de trabajo actual al directorio "f2".
+
+14. `cd ~/iso`: Cambia el directorio de trabajo actual al directorio "iso" en el directorio personal del usuario.
+
+15. `pwd > f3`: Muestra el directorio actual y redirige la salida al archivo "f3".
+
+16. `ps | grep 'ps' | wc -l >> ../../f2/f3`: Lista los procesos en ejecución, filtra las líneas que contienen "ps" con `grep`, y cuenta el número de líneas con `wc -l`, luego agrega ese número al archivo "f3" ubicado en el directorio "f2".
+
+17. `chmod 700 ../../f2`: Cambia los permisos del directorio "f2" para que solo el propietario tenga permisos de lectura, escritura y ejecución.
+
+18. `cd ..`: Cambia el directorio de trabajo actual al directorio padre.
+
+19. `find . -name etc/passwd`: Busca el archivo "/etc/passwd" en el sistema de archivos a partir del directorio actual.
+
+20. `find / -name etc/passwd`: Busca el archivo "/etc/passwd" en todo el sistema de archivos desde la raíz.
+
+**Sesión 2 (creación del archivo "ejercicio10_explicacion"):**
+
+- En esta sesión, se crea un archivo llamado "ejercicio10_explicacion" utilizando un editor de texto y se proporcionan explicaciones de los resultados obtenidos en la Sesión 1.
+
+(b) Los comandos 19 y 20 para copiar directorios y archivos se completarían de la siguiente manera:
+
+19: `cp -r iso /ruta/al/directorio/creado_en_9_a`
+
+20: `cp -r directorio_1 directorio_2 /ruta/al/directorio/creado_en_9_a`
+
+(c) Después de ejecutar los comandos 19 y 20, se debe proporcionar una explicación de los resultados obtenidos en el archivo "ejercicio10_explicacion" creado en la Sesión 2. Las explicaciones deberían describir qué se copió y dónde se copió en el directorio creado en el ejercicio 9.a).
+
+Para realizar las acciones mencionadas en la estructura de directorios y archivos proporcionada, aquí están los comandos necesarios:
+
+(a) Mover el archivo "f3" al directorio de trabajo /home/usuario:
+
+```bash
+mv /home/usuario/dir1/dir11/dir111/f3 /home/usuario
+```
+
+(b) Copiar el archivo "f4" al directorio "dir11":
+
+```bash
+cp /home/usuario/f4 /home/usuario/dir1/dir11
+```
+
+(c) Copiar el archivo "f4" al directorio "dir11" y renombrarlo como "f7":
+
+```bash
+cp /home/usuario/f4 /home/usuario/dir1/dir11/f7
+```
+
+(d) Crear el directorio "copia" dentro del directorio "usuario" y copiar en él el contenido de "dir1":
+
+```bash
+mkdir /home/usuario/copia
+cp -r /home/usuario/dir1/* /home/usuario/copia
+```
+
+(e) Renombrar el archivo "f1" como "archivo" y ver los permisos del mismo:
+
+```bash
+mv /home/usuario/dir1/dir11/f1 /home/usuario/dir1/dir11/archivo
+ls -l /home/usuario/dir1/dir11/archivo
+```
+
+(f) Cambiar los permisos del archivo llamado "archivo" de acuerdo a las especificaciones:
+
+```bash
+chmod u=rw,g=x,o=rwx /home/usuario/dir1/dir11/archivo
+```
+
+(g) Renombrar los archivos "f32" y "f4" como "f3.exe" y "f4.exe" respectivamente:
+
+```bash
+mv /home/usuario/dir2/f32 /home/usuario/dir2/f3.exe
+mv /home/usuario/dir2/f4 /home/usuario/dir2/f4.exe
+```
+
+Para cambiar los permisos de los archivos "f3.exe" y "f4.exe" en un solo comando como se describe, puedes utilizar:
+
+```bash
+chmod u=,g=w,o=wx /home/usuario/dir2/f3.exe /home/usuario/dir2/f4.exe
+```
+
+13. Secuencia de pasos:
+
+(a) Crear un directorio llamado "logs" en el directorio /tmp:
+
+```bash
+mkdir /tmp/logs
+```
+
+(b) Copiar todo el contenido del directorio /var/log en el directorio creado en el paso anterior:
+
+```bash
+cp -r /var/log/* /tmp/logs
+```
+
+(c) Empaquetar el directorio creado en el paso 1 en un archivo llamado "misLogs.tar":
+
+```bash
+tar cf misLogs.tar /tmp/logs
+```
+
+(d) Empaquetar y comprimir el directorio creado en el paso 1 en un archivo llamado "misLogs.tar.gz":
+
+```bash
+tar czf misLogs.tar.gz /tmp/logs
+```
+
+(e) Copiar los archivos creados en los pasos 3 y 4 al directorio de trabajo de su usuario:
+
+```bash
+cp /tmp/misLogs.tar /home/usuario
+cp /tmp/misLogs.tar.gz /home/usuario
+```
+
+(f) Eliminar el directorio creado en el paso 1, "logs":
+
+```bash
+rm -r /tmp/logs
+```
+
+(g) Desempaquetar los archivos creados en los pasos 3 y 4 en dos directorios diferentes (utilice el comando `tar` para desempaquetarlos):
+
+```bash
+tar xf /home/usuario/misLogs.tar -C /ruta/del/destino1
+tar xzf /home/usuario/misLogs.tar.gz -C /ruta/del/destino2
+```
+
+Reemplace "/ruta/del/destino1" y "/ruta/del/destino2" con las rutas de los directorios donde desea desempaquetar los archivos.
