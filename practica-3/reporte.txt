@@ -1,0 +1,3 @@
+Nombre de usuario | Cantidad de archivos con la extensión .exe
+------------------------------------------------------------
+agustin-murray | 22
