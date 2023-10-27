@@ -1,0 +1,8 @@
+Inanición (Starvation)
+(a) ¿Qué significa?: Situacion en la que un proceso o un conjunto de procesos quedan atrapados en una cola de espera indefinidamente y no pueden ejecutarse, a pesar de tener la prioridad para hacerlo.
+
+(b) ¿Cuál/es de los algoritmos vistos puede provocarla?:
+ -SJF: En procesos largos.
+ -Prioridades: En procesos de baja prioridad.
+(c) ¿Existe alguna técnica que evite la inanición para el/los algoritmos mencionados en b?:
+  Para el caso del algoritmo de prioridades, una solucion a la inanicion es peritir a un proceso cambiar su prioridad durante su ciclo de vida (Aging o Penalty).

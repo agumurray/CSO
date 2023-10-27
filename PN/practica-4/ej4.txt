@@ -1,0 +1,15 @@
+Para el algoritmo Round Robin, existen 2 variantes:
+Timer Fijo
+Timer Variable
+(a) ¿Qué significan estas 2 variantes?:
+ -Timer variable:  El “contador” se inicializa en Q (contador := Q) cada vez que
+un proceso es asignado a la CPU
+ Es el m´as utilizado
+
+  -Timer fijo: Algoritmo RR - Timer Fijo
+ El “contador” se inicializa en Q cuando su valor es cero
+ if (contador == 0) contador = Q;
+ Se puede ver como un valor de Q compartido entre los
+procesos
+(b) Explique mediante un ejemplo sus diferencias.
+(c) En cada variante ¿Dónde debería residir la información del Quantum?: Variable: PCB // Fija: Global.

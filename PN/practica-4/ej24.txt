@@ -1,0 +1,13 @@
+1. La "huella de un proceso en un procesador" se refiere a la cantidad de recursos del procesador (CPU) que un proceso utiliza o reserva mientras se ejecuta. Esta huella incluye el uso de la CPU y otros recursos relacionados con la ejecución del proceso.
+
+
+2. "Afinidad con un procesador" se refiere a la configuración que permite asignar un proceso específico a ejecutarse en un núcleo o procesador particular en un sistema multiprocesador o multinúcleo. Esto implica que el proceso se ejecutará principalmente en el procesador designado.
+
+
+3. En algunos casos, es mejor que un proceso se ejecute en el mismo procesador debido a la minimización de la latencia y la comunicación entre procesos. Si los procesos comparten datos o necesitan una comunicación constante, la ejecución en el mismo procesador puede ser más eficiente.
+
+
+4. Sí, en Windows, los usuarios pueden cambiar la afinidad de un proceso utilizando el Administrador de tareas. En GNU/Linux, los usuarios también pueden cambiar la afinidad de un proceso utilizando comandos como "taskset" o herramientas de administración de tareas similares.
+
+
+5. El "balanceo de carga" es un concepto que se refiere a la distribución equitativa de la carga de trabajo entre varios recursos de procesamiento, como procesadores, servidores o nodos de una red. El objetivo es evitar la sobrecarga de un recurso mientras otros están infrautilizados, mejorando así la eficiencia y el rendimiento del sistema.

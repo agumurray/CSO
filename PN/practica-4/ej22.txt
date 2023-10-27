@@ -1,0 +1,3 @@
+a)fuertemente acoplados
+b)todos los procesadores reciben la misma cantidad de procesos
+c)un procesador maestro da ordenes al procesador esclavo

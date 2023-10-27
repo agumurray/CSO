@@ -1,0 +1,2 @@
+En este caso, el quantum seria siempre mayor que cualquier rafaga de CPU, haciendo que nunca sea interrumpida hasta terminar por completo, tal como funciona el algoritmo FIFO
+

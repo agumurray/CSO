@@ -1,0 +1,7 @@
+Algunos algoritmos pueden presentar ciertas desventajas cuando en el sistema se cuenta
+con procesos ligados a CPU y procesos ligados a entrada salida. Analice las mismas para
+los siguientes algoritmos:
+(a) Round Robin:
+  Pueden haber intento de uso de un mismo recurso desperdiciando tiempo.
+(b) SRTF (Shortest Remaining Time First):
+  Favorece a los I/O bound.

@@ -1,0 +1,28 @@
+(d) Comunicación entre procesos:
+i. La forma de comunicación entre procesos a través de pipes implica el uso de tuberías (pipes) que permiten la transferencia de datos entre procesos. Un proceso puede escribir datos en un extremo de la tubería, mientras que otro proceso puede leer esos datos en el otro extremo.
+
+ii. Un pipe se crea en C utilizando la función pipe(). Esta función se encuentra en la biblioteca unistd.h.
+
+iii. Para crear un pipe, no se necesitan parámetros específicos. La función pipe() no requiere argumentos. Se utiliza para crear una tubería anónima que se usa para la comunicación entre procesos.
+
+iv. Con pipes, es posible realizar una comunicación unidireccional (un proceso escribe y el otro lee) entre dos procesos. Para la comunicación bidireccional, se pueden utilizar dos pipes, uno para cada dirección.
+
+(e) El sistema operativo (SO) necesita conocer cierta información sobre un proceso, y esta información se almacena en una estructura de datos llamada PCB (Control Block Process, Bloque de Control de Proceso).
+
+(f) Un proceso "CPU Bound" se refiere a un proceso que utiliza principalmente la CPU y realiza una cantidad mínima de entrada/salida (I/O). Un proceso "I/O Bound" es aquel que realiza muchas operaciones de entrada/salida y no utiliza mucho tiempo de CPU.
+
+(g) Los estados posibles por los que puede atravesar un proceso incluyen:
+
+    Listo (Ready)
+    En ejecución (Running)
+    Bloqueado (Blocked)
+    Terminado (Terminated)
+
+(h) Las posibles transiciones entre los estados se pueden representar de la siguiente manera:
+
+    Listo (Ready) -> En ejecución (Running)
+    En ejecución (Running) -> Listo (Ready) o Bloqueado (Blocked)
+    Bloqueado (Blocked) -> Listo (Ready)
+    En ejecución (Running) -> Terminado (Terminated)
+
+(i) El scheduler de tareas del sistema operativo se encarga de las transiciones entre los estados de los procesos. El scheduler decide cuándo un proceso pasa de estar listo a estar en ejecución y cuándo un proceso en ejecución debe detenerse para dar paso a otro proceso listo. Esto se conoce como planificación de procesos.

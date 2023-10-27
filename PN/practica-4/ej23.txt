@@ -1,0 +1,1 @@
+ FCFS. Ningun proceso sufriria inanicion. Desventaja: Procesos con prioridad no serian atendidos de forma adecuada.

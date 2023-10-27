@@ -1,0 +1,10 @@
+a)    Cola de Procesos Interactivos:
+    Para administrar la cola de procesos interactivos, se podría utilizar un algoritmo de planificación basado en prioridades. Los procesos interactivos suelen requerir una respuesta rápida del sistema, por lo que un algoritmo que otorgue prioridad a estos procesos sería adecuado. Ejemplos de algoritmos de planificación que se podrían usar aquí incluyen:
+        Planificación por Prioridad: Donde se les asigna una prioridad más alta a los procesos interactivos para que se ejecuten antes que los procesos en la cola de lotes.
+
+    Cola de Procesos Batch:
+    Para la cola de procesos Batch, que suelen ser tareas de procesamiento en lote que pueden ejecutarse en segundo plano sin interacción del usuario, se podría utilizar un algoritmo de planificación que optimice el rendimiento del sistema, como:
+        Planificación Round Robin: Este algoritmo asigna un tiempo de CPU fijo a cada proceso en la cola. Es adecuado para procesos batch que pueden ejecutarse en segundo plano sin la necesidad de una alta prioridad de respuesta.
+
+b)Un algoritmo con prioridad no apropiativo en el que la cola Interactiva tenga mas prioridad que la de batch, y para garantizar que todos los procesos sean atendidos realizaría un aging para cambiar la prioridad de los procesos de batch.   ## **#13**
+

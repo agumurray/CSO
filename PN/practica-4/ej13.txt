@@ -1,0 +1,1 @@
+No. El VRR con TV hace que cuando un proceso termina su tiempo en CPU, el proceso siguiente utilice el quantum restante de la rafaga anterior, haciendo que llegue a cero.

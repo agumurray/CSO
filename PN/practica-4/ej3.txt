@@ -1,0 +1,46 @@
+3. Para los siguientes algoritmos de scheduling:
+FCFS (Fisrt Coome First Served)
+SJF (Shortest Job First)
+Round Robin
+Prioridades
+(a) Explique su funcionamiento mediante un ejemplo.
+(b) ¿Alguno de ellos requiere algún parámetro para su funcionamiento?
+(c) Cual es el mas adecuado según los tipos de procesos y/o SO.
+(d) Cite ventajas y desventajas de su uso.
+
+-FCFS (fifo):
+  (a): Cuando hay que elegir un proceso para ejecutar, se selecciona el mas viejo
+  (b): No requiere parametros para su funcionamiento.
+  (c): No favorece ningun tipo de procesos
+  (d): En principio podriamos decir que los CPU Bound terminan al comenzar su primer rafaga (beneficioso), mientras que los I/O Bound no (no beneficioso).
+
+  Ejemplo: ver ejemplo1.def
+
+-SJS (Shorter Job First):
+  (a): Polıtica nonpreemptive que selecciona el proceso con la rafaga mas corto. Calculo basado en la ejecucion previa. Procesos cortos se colocan delante de procesos largos.
+  (b): No requiere parametros para su funcionamiento.
+  (c): Adecuado para procesos cortos.
+  (d): Los procesos largos pueden sufrir starvation.
+
+-Round Robin (RR):
+  (a): Politica basada en un reloj. Se le asignan n Quantums a cada proceso. Al llegar a cero es expulsado a la ready queue. El contador puede ser global o local (PCB).
+      Timer variable: El “contador” se inicializa en Q (contador := Q) cada vez que
+un proceso es asignado a la CPU. Es el mas utilizado
+      Timer fijo: Q compartido entre procesos, vuelve a Q cuando es cero.
+  (b): Si, el valor del Quantum.
+  (c): No especifica.
+  (d): Quantums muy pequenos o muy grandes.
+
+-Prioridades:
+  (a): Cada proceso tiene un valor que representa su prioridad → menor valor, mayor prioridad Se selecciona el proceso de mayor prioridad de los que se
+encuentran en la Ready Queue. Existe una Ready Queue por cada nivel de prioridad. Puede ser preemptive o no.
+  (b): Valor de prioridad.
+  (c): Procesos de baja prioridad pueden sufrir starvation (inanici´on Soluci´on: permitir a un proceso cambiar su prioridad durante
+su ciclo de vida → Aging o Penalty
+  (d):
+
+-SRTF (Shortest remaining time first):
+Versi´on preemptive de SJF
+ Selecciona el proceso al cual le resta menos tiempo de
+ejecuci´on en su siguiente r´afaga.
+¿A qu´e tipos de procesos favorece? → I/O Bound
