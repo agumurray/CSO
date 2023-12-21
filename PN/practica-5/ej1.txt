@@ -1,0 +1,8 @@
+Explique a que hacen referencia los siguientes términos:
+  -Dirección Lógica o Virtual:
+    • Es una direccion que enmascara o abstrae una direccion fısica
+    • Referencia a una localidad en memoria
+    • Se la debe traducir a una direccion fısica
+  -Dirección Física:
+    • Es la direccion real. Es con la que se accede efectivamente a memoria
+    • Representa la direccion absoluta en memoria principal
